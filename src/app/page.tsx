@@ -78,42 +78,48 @@ export default function Home() {
   };
 
   const processPdf = async (file: File) => {
-    const pdfjsLib = await import('pdfjs-dist');
-    pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
-    
-    const arrayBuffer = await file.arrayBuffer();
-    const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
-    const pageImages: string[] = [];
-    
-    for (let i = 1; i <= pdf.numPages; i++) {
-      const page = await pdf.getPage(i);
-      const scale = 2.0; // High resolution
-      const viewport = page.getViewport({ scale });
-      const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d');
-      if (!context) continue;
+    try {
+      const pdfjsLib = await import('pdfjs-dist');
+      // Use unpkg for more stable versioning in some environments
+      pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
+      
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      const pageImages: string[] = [];
+      
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const scale = 2.0; 
+        const viewport = page.getViewport({ scale });
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        if (!context) continue;
 
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
 
-      await page.render({ canvasContext: context, viewport, canvas }).promise;
-      pageImages.push(canvas.toDataURL('image/jpeg', 0.8));
+        await page.render({ canvasContext: context, viewport, canvas }).promise;
+        pageImages.push(canvas.toDataURL('image/jpeg', 0.8));
+      }
+      return pageImages;
+    } catch (err: any) {
+      console.error("PDF.js Error:", err);
+      throw new Error(`Không thể đọc PDF: ${err.message || 'Lỗi không xác định'}`);
     }
-    return pageImages;
   };
 
   const handleFiles = async (files: FileList | null) => {
     if (!files) return;
     setError(null);
     setIsUploading(true);
-    setStatusMessage("ĐANG XỬ LÝ PDF...");
+    setStatusMessage("ĐANG XỬ LÝ FILE...");
     
     const fileArray = Array.from(files).sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }));
     
     try {
       const results: string[] = [];
       for (const file of fileArray) {
-        if (file.type === 'application/pdf') {
+        if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
           const pdfPages = await processPdf(file);
           results.push(...pdfPages);
         } else if (file.type.startsWith('image/')) {
@@ -121,10 +127,12 @@ export default function Home() {
           results.push(imgBase64);
         }
       }
+      if (results.length === 0) throw new Error("Không có file hợp lệ.");
       setOriginalImages((prev) => [...prev, ...results]);
       setImages((prev) => [...prev, ...results]);
     } catch (err: any) {
-      setError("Có lỗi khi xử lý file. Bạn kiểm tra lại nhé.");
+      console.error("HandleFiles Error:", err);
+      setError(err.message || "Có lỗi khi xử lý file. Bạn kiểm tra lại nhé.");
     } finally {
       setIsUploading(false);
       setStatusMessage("");
