@@ -4,6 +4,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "i2latex",
   description: "Advanced Image-to-LaTeX Converter",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({

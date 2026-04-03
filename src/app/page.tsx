@@ -243,17 +243,6 @@ export default function Home() {
 
   return (
     <main className="container">
-      <motion.div 
-        className="card" 
-        style={{ width: 'fit-content', padding: '1rem 2rem', marginBottom: '3rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={smoothTransition}
-      >
-        <img src="/i2l.svg" alt="i2l logo" style={{ height: '40px', width: 'auto' }} />
-        <span style={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '1.2rem' }}>i2latex</span>
-      </motion.div>
-
       <div className="raw-grid">
         <motion.section initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ ...smoothTransition, delay: 0.1 }}>
           <div className="meta-block">
