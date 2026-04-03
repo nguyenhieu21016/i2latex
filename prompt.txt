@@ -1,0 +1,84 @@
+
+Yêu cầu chính:
+Chào AI, tôi cần bạn thực hiện một nhiệm vụ gồm hai bước:
+Học một template LaTeX: Trước tiên, hãy phân tích và học kỹ lưỡng template LaTeX mà tôi cung cấp dưới đây. Template này được thiết kế để tạo ra các tài liệu học thuật (đề thi, bài giảng) bằng tiếng Việt.
+Chuyển đổi nội dung từ hình ảnh: Sau khi đã hiểu rõ template, hãy chuyển đổi toàn bộ nội dung từ các hình ảnh mà tôi sẽ cung cấp sau đây thành một file LaTeX duy nhất, tuân thủ nghiêm ngặt theo template đã học.
+Bước 1: Học Template LaTeX
+Đây là code của template bạn cần học. Hãy phân tích kỹ các phần sau:
+Cấu trúc \documentclass và các gói \usepackage.
+Cách thiết lập đầu trang và chân trang (\pagestyle, \lhead, \rhead, \fancyfoot).
+Các lệnh tùy chỉnh để định dạng danh sách câu hỏi (\setlist, enumerate).
+Các lệnh tùy chỉnh để định dạng các lựa chọn trắc nghiệm, đặc biệt là cách chia cột (\optS, \optL, \choicesepS, \choicesepL).
+Nội dung Template:
+code
+Latex
+\documentclass[11pt,a4paper,openany]{article}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{tikz,lipsum,lmodern}
+\usepackage{fouriernc}
+\usepackage{float}
+\everymath{\displaystyle}
+\usepackage[left=2cm,right=1.5cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{longtable}
+\usepackage{multicol}
+
+% --- Page Style ---
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Ngày tháng năm}
+\rhead{Tên bài học}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancyfoot[L]{Tên chương}
+\fancyfoot[R]{Trang \thepage}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% --- List settings ---
+\setlist[enumerate, 1]{label=\textbf{Câu \arabic*.}, leftmargin=*, align=left, itemsep=1.5\baselineskip, after=\vspace{0.5\baselineskip}}
+\setlist[enumerate, 2]{label=\alph*), leftmargin=2em, itemsep=0.5\baselineskip, before=\vspace{-0.5em}, after=\vspace{-0.5em}}
+
+% --- Choice formatting commands ---
+\newlength{\letterboxwidth}
+\setlength{\letterboxwidth}{0.035\linewidth}
+\newlength{\lettercontentspace}
+\setlength{\lettercontentspace}{0.75em}
+
+% For 4 options per line
+\newlength{\contentboxwidthS}
+\setlength{\contentboxwidthS}{0.17\linewidth}
+\newcommand{\choicesepS}{\hspace{0.08\linewidth}}
+\newcommand{\optS}[2]{%
+    \makebox[\letterboxwidth][l]{\textbf{#1.}}%
+    \hspace{\lettercontentspace}%
+    \makebox[\contentboxwidthS][l]{#2}%
+}
+
+% For 2 options per line
+\newlength{\contentboxwidthL}
+\setlength{\contentboxwidthL}{0.38\linewidth}
+\newcommand{\choicesepL}{\hspace{0.16\linewidth}}
+\newcommand{\optL}[2]{%
+    \makebox[\letterboxwidth][l]{\textbf{#1.}}%
+    \hspace{\lettercontentspace}%
+    \makebox[\contentboxwidthL][l]{#2}%
+}
+Bước 2: Chuyển đổi nội dung từ hình ảnh theo Template
+Bây giờ, hãy sử dụng template đã học để chuyển đổi tất cả nội dung trong các hình ảnh dưới đây thành một file LaTeX hoàn chỉnh.
+Yêu cầu chi tiết:
+Nhận dạng nội dung: Đọc và hiểu toàn bộ văn bản, công thức toán học, bảng biểu, và hình ảnh từ các file ảnh.
+Áp dụng Template:
+Sử dụng cấu trúc \documentclass và các gói lệnh đã cho.
+Tùy chỉnh Header/Footer: Thay đổi "Tiêu đề trái", "Tiêu đề phải", "Chân trang trái" cho phù hợp với nội dung của tài liệu trong ảnh. Ví dụ: "Bài 1. Mệnh đề", "Đại số 10", v.v.
+Định dạng câu hỏi: Sử dụng môi trường enumerate đã được \setlist định nghĩa để đánh số các câu hỏi chính, bài tập, và các mục con.
+Định dạng lựa chọn: Sử dụng lệnh \optS cho các đáp án trắc nghiệm ngắn (4 lựa chọn/hàng) và \optL cho các đáp án dài (2 lựa chọn/hàng) để đảm bảo bố cục đẹp và thống nhất.
+Công thức toán học: Viết lại tất cả các công thức toán học bằng cú pháp LaTeX. Đảm bảo chúng chính xác và dễ đọc.
+Bảng biểu: Sử dụng môi trường tabular hoặc longtable để tái tạo lại các bảng biểu.
+Ngôn ngữ: Nếu nội dung trong ảnh là tiếng Anh, hãy dịch nó sang tiếng Việt trước khi đưa vào file LaTeX.
+Kết quả cuối cùng: Cung cấp toàn bộ mã LaTeX hoàn chỉnh, sẵn sàng để sao chép, dán vào một trình biên dịch LaTeX và tạo ra file PDF.
