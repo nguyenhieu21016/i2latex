@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
 
 :root {
-  --bg: #f5f0e8;
-  --accent: #f5f0e8;
-  --text: #1a1a1a;
-  --border: #000000;
+  --bg: #fffff2;
+  --accent: #fffff2;
+  --text: #0212b0;
+  --border: #0212b0;
   --white: #ffffff;
 }
 
@@ -20,7 +20,7 @@ body {
   font-family: 'IBM Plex Mono', monospace;
   overflow-x: hidden;
   line-height: 1.4;
-  transition: background-color 0.4s ease;
+  transition: all 0.4s ease;
 }
 
 /* Base Typography */
@@ -62,6 +62,12 @@ h2 {
   margin-bottom: 0.75rem;
   outline: none;
   transition: all 0.2s ease;
+  color: var(--text);
+}
+
+.input-field::placeholder {
+  color: var(--text);
+  opacity: 0.4;
 }
 
 .input-field:focus {
@@ -151,6 +157,7 @@ h2 {
   background: #ffffff;
   min-height: 450px;
   overflow-x: auto;
+  color: var(--text);
 }
 
 .code-content pre {
@@ -168,6 +175,7 @@ h2 {
   justify-content: space-between;
   font-weight: 700;
   text-transform: uppercase;
+  color: var(--text);
 }
 
 .progress-track {
@@ -193,6 +201,7 @@ h2 {
   background: var(--white);
   margin-bottom: 1.25rem;
   transition: all 0.2s ease;
+  color: var(--text);
 }
 
 .preview-thumb {
