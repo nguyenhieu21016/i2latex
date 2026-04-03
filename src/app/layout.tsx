@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Image to LaTeX Converter",
-  description: "Convert images to LaTeX code using AI",
+  title: "i2latex",
+  description: "Advanced Image-to-LaTeX Converter",
 };
 
 export default function RootLayout({
