@@ -32,7 +32,7 @@ export default function Home() {
       img.src = base64Str;
       img.onload = () => {
         const canvas = document.createElement('canvas');
-        const MAX_DIM = 1000;
+        const MAX_DIM = 1800;
         let width = img.width;
         let height = img.height;
         if (width > height) { if (width > MAX_DIM) { height *= MAX_DIM / width; width = MAX_DIM; } }
@@ -41,9 +41,9 @@ export default function Home() {
         canvas.height = height;
         const ctx = canvas.getContext('2d');
         if (!ctx) return resolve(base64Str);
-        ctx.filter = 'grayscale(1) contrast(1.2) brightness(1.1)';
+        ctx.filter = 'grayscale(1) contrast(1.15) brightness(1.1)';
         ctx.drawImage(img, 0, 0, width, height);
-        resolve(canvas.toDataURL('image/jpeg', 0.4));
+        resolve(canvas.toDataURL('image/jpeg', 0.6));
       };
     });
   };

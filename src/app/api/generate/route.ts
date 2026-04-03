@@ -57,8 +57,8 @@ SỬ DỤNG THÔNG TIN SAU CHO HEADER/FOOTER (TUYỆT ĐỐI CHÍNH XÁC):
     });
 
     const userPrompt = isFirst && batchIndex === 0
-      ? "Đây là toàn bộ các trang của tài liệu. Hãy chuyển đổi tất cả sang một file LaTeX hoàn chỉnh duy nhất, bắt đầu từ preamble."
-      : `Đây là đợt ảnh thứ ${batchIndex + 1}/${totalBatches}. Hãy tiếp tục nội dung từ các trang trước. CHỈ TRẢ VỀ phần thân tài liệu (body content), không lặp lại preamble.`;
+      ? "Đây là toàn bộ các trang của tài liệu. Hãy chuyển đổi tất cả sang một file LaTeX hoàn chỉnh duy nhất, bắt đầu từ preamble. HÃY ĐỌC KỸ TỪNG KÝ TỰ TOÁN HỌC."
+      : `Đây là đợt ảnh thứ ${batchIndex + 1}/${totalBatches}. Hãy tiếp tục nội dung từ các trang trước. CHỈ TRẢ VỀ phần thân tài liệu (body content), không lặp lại preamble. KIỂM TRA KỸ CÁC CHỈ SỐ DƯỚI (SUBSCRIPT).`;
 
     try {
       const result = await model.generateContent([...imageParts, userPrompt]);

@@ -1,17 +1,15 @@
 
 Yêu cầu chính:
-Chào AI, tôi cần bạn thực hiện một nhiệm vụ gồm hai bước:
-Học một template LaTeX: Trước tiên, hãy phân tích và học kỹ lưỡng template LaTeX mà tôi cung cấp dưới đây. Template này được thiết kế để tạo ra các tài liệu học thuật (đề thi, bài giảng) bằng tiếng Việt.
-Chuyển đổi nội dung từ hình ảnh: Sau khi đã hiểu rõ template, hãy chuyển đổi toàn bộ nội dung từ các hình ảnh mà tôi sẽ cung cấp sau đây thành một file LaTeX duy nhất, tuân thủ nghiêm ngặt theo template đã học.
+Chào AI, tôi cần bạn thực hiện một nhiệm vụ gồm hai bước với độ chính xác tuyệt đối (Pixel-Perfect Accuracy):
+
 Bước 1: Học Template LaTeX
 Đây là code của template bạn cần học. Hãy phân tích kỹ các phần sau:
 Cấu trúc \documentclass và các gói \usepackage.
 Cách thiết lập đầu trang và chân trang (\pagestyle, \lhead, \rhead, \fancyfoot).
 Các lệnh tùy chỉnh để định dạng danh sách câu hỏi (\setlist, enumerate).
-Các lệnh tùy chỉnh để định dạng các lựa chọn trắc nghiệm, đặc biệt là cách chia cột (\optS, \optL, \choicesepS, \choicesepL).
+Các lệnh tùy chỉnh để định dạng các lựa chọn trắc nghiệm (\optS, \optL).
+
 Nội dung Template:
-code
-Latex
 \documentclass[11pt,a4paper,openany]{article}
 \usepackage[vietnamese]{babel}
 \usepackage{amsmath}
@@ -50,35 +48,25 @@ Latex
 \newlength{\lettercontentspace}
 \setlength{\lettercontentspace}{0.75em}
 
-% For 4 options per line
 \newlength{\contentboxwidthS}
 \setlength{\contentboxwidthS}{0.17\linewidth}
 \newcommand{\choicesepS}{\hspace{0.08\linewidth}}
-\newcommand{\optS}[2]{%
-    \makebox[\letterboxwidth][l]{\textbf{#1.}}%
-    \hspace{\lettercontentspace}%
-    \makebox[\contentboxwidthS][l]{#2}%
-}
+\newcommand{\optS}[2]{\makebox[\letterboxwidth][l]{\textbf{#1.}}\hspace{\lettercontentspace}\makebox[\contentboxwidthS][l]{#2}}
 
-% For 2 options per line
 \newlength{\contentboxwidthL}
 \setlength{\contentboxwidthL}{0.38\linewidth}
 \newcommand{\choicesepL}{\hspace{0.16\linewidth}}
-\newcommand{\optL}[2]{%
-    \makebox[\letterboxwidth][l]{\textbf{#1.}}%
-    \hspace{\lettercontentspace}%
-    \makebox[\contentboxwidthL][l]{#2}%
-}
-Bước 2: Chuyển đổi nội dung từ hình ảnh theo Template
-Bây giờ, hãy sử dụng template đã học để chuyển đổi tất cả nội dung trong các hình ảnh dưới đây thành một file LaTeX hoàn chỉnh.
-Yêu cầu chi tiết:
-Nhận dạng nội dung: Đọc và hiểu toàn bộ văn bản, công thức toán học, bảng biểu, và hình ảnh từ các file ảnh.
-Áp dụng Template:
-Sử dụng cấu trúc \documentclass và các gói lệnh đã cho.
-Tùy chỉnh Header/Footer: Thay đổi "Tiêu đề trái", "Tiêu đề phải", "Chân trang trái" cho phù hợp với nội dung của tài liệu trong ảnh. Ví dụ: "Bài 1. Mệnh đề", "Đại số 10", v.v.
-Định dạng câu hỏi: Sử dụng môi trường enumerate đã được \setlist định nghĩa để đánh số các câu hỏi chính, bài tập, và các mục con.
-Định dạng lựa chọn: Sử dụng lệnh \optS cho các đáp án trắc nghiệm ngắn (4 lựa chọn/hàng) và \optL cho các đáp án dài (2 lựa chọn/hàng) để đảm bảo bố cục đẹp và thống nhất.
-Công thức toán học: Viết lại tất cả các công thức toán học bằng cú pháp LaTeX. Đảm bảo chúng chính xác và dễ đọc.
-Bảng biểu: Sử dụng môi trường tabular hoặc longtable để tái tạo lại các bảng biểu.
-Ngôn ngữ: Nếu nội dung trong ảnh là tiếng Anh, hãy dịch nó sang tiếng Việt trước khi đưa vào file LaTeX.
-Kết quả cuối cùng: Cung cấp toàn bộ mã LaTeX hoàn chỉnh, sẵn sàng để sao chép, dán vào một trình biên dịch LaTeX và tạo ra file PDF.
+\newcommand{\optL}[2]{\makebox[\letterboxwidth][l]{\textbf{#1.}}\hspace{\lettercontentspace}\makebox[\contentboxwidthL][l]{#2}}
+
+Bước 2: Chuyển đổi nội dung từ hình ảnh (Giao thức Chính xác Cao)
+Quy tắc rà soát (Strict Verification):
+1. QUY TẮC ĐỌC KÉP: Với mọi công thức, hãy đọc lại ít nhất 2 lần để xác định chính xác Chỉ số trên (Superscript) và Chỉ số dưới (Subscript). Đặc biệt chú ý sự khác biệt giữa các ký tự dễ nhầm lẫn như: n vs h, x vs n, \alpha vs a, \sigma vs 6.
+2. LOGIC NGỮ CẢNH: Sử dụng tư duy toán học để giải quyết các ký hiệu mờ. Ví dụ: Nếu đề bài đang nói về biến x, hãy ưu tiên đọc các ký hiệu tương tự là x thay vì n. Nếu có căn thức, hãy đảm bảo \sqrt bao trùm đúng phạm vi nội dung.
+3. CÔNG THỨC TOÁN HỌC: 
+   - Luôn sử dụng môi trường \[...\] cho công thức lớn và $...$ cho công thức trong dòng.
+   - Đảm bảo \frac, \sqrt, \int, \sum có đầy đủ các cực/giới hạn.
+4. ĐỊNH DẠNG:
+   - Header/Footer: SỬ DỤNG CHÍNH XÁC thông tin về Ngày, Bài, Chương nếu được cung cấp trong cấu hình đính kèm.
+   - Trắc nghiệm: Luôn dùng \optS (4 đáp án/hòng) hoặc \optL (2 đáp áp/hàng).
+
+Kết quả: Chỉ trả về mã LaTeX hoàn chỉnh, không kèm theo lời thoại hay giải thích.
