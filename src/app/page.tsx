@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Upload, FileCode, Copy, Check, Loader2, Sparkles, X, AlertCircle, Clock, Download, Plus, History, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence, Reorder } from 'framer-motion';
 
@@ -77,18 +77,57 @@ export default function Home() {
     });
   };
 
+  const processPdf = async (file: File) => {
+    const pdfjsLib = await import('pdfjs-dist');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+    
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument(arrayBuffer).promise;
+    const pageImages: string[] = [];
+    
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const scale = 2.0; // High resolution
+      const viewport = page.getViewport({ scale });
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+      if (!context) continue;
+
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+
+      await page.render({ canvasContext: context, viewport, canvas }).promise;
+      pageImages.push(canvas.toDataURL('image/jpeg', 0.8));
+    }
+    return pageImages;
+  };
+
   const handleFiles = async (files: FileList | null) => {
     if (!files) return;
     setError(null);
-    const fileArray = Array.from(files)
-      .filter(f => f.type.startsWith('image/'))
-      .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }));
+    setIsUploading(true);
+    setStatusMessage("ĐANG XỬ LÝ PDF...");
+    
+    const fileArray = Array.from(files).sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }));
+    
     try {
-      const newImages = await Promise.all(fileArray.map(f => processFile(f)));
-      setOriginalImages((prev) => [...prev, ...newImages]);
-      setImages((prev) => [...prev, ...newImages]);
+      const results: string[] = [];
+      for (const file of fileArray) {
+        if (file.type === 'application/pdf') {
+          const pdfPages = await processPdf(file);
+          results.push(...pdfPages);
+        } else if (file.type.startsWith('image/')) {
+          const imgBase64 = await processFile(file);
+          results.push(imgBase64);
+        }
+      }
+      setOriginalImages((prev) => [...prev, ...results]);
+      setImages((prev) => [...prev, ...results]);
     } catch (err: any) {
-      setError("Có gì đó chưa đúng, bạn thử lại nhé.");
+      setError("Có lỗi khi xử lý file. Bạn kiểm tra lại nhé.");
+    } finally {
+      setIsUploading(false);
+      setStatusMessage("");
     }
   };
 
@@ -235,8 +274,8 @@ export default function Home() {
   };
 
   const removeImage = (idx: number) => {
-    setImages((prev) => prev.filter((_, i) => i !== idx));
-    setOriginalImages((prev) => prev.filter((_, i) => i !== idx));
+    setImages((prev: string[]) => prev.filter((_, i) => i !== idx));
+    setOriginalImages((prev: string[]) => prev.filter((_, i) => i !== idx));
   };
 
   const smoothTransition = { type: 'spring' as const, stiffness: 100, damping: 20 };
@@ -265,19 +304,19 @@ export default function Home() {
               onClick={() => fileInputRef.current?.click()}
             >
               <FileCode size={40} strokeWidth={2} style={{ marginBottom: '1.5rem', opacity: 0.6 }} />
-              <p style={{ fontWeight: 600, fontSize: '1.1rem' }}>Thả ảnh tại đây</p>
-              <input type="file" ref={fileInputRef} onChange={(e) => handleFiles(e.target.files)} accept="image/*" multiple hidden />
+              <p style={{ fontWeight: 600, fontSize: '1.1rem' }}>Thả ảnh hoặc file PDF tại đây</p>
+              <input type="file" ref={fileInputRef} onChange={(e) => handleFiles(e.target.files)} accept="image/*,application/pdf" multiple hidden />
             </div>
 
             <AnimatePresence>
               {originalImages.length > 0 && (
                 <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={smoothTransition} style={{ marginTop: '2.5rem' }}>
-                  <Reorder.Group axis="y" values={originalImages} onReorder={(n) => { setOriginalImages(n); setImages(n); }}>
-                    {originalImages.map((img, idx) => (
+                  <Reorder.Group axis="y" values={originalImages} onReorder={(n: string[]) => { setOriginalImages(n); setImages(n); }}>
+                    {originalImages.map((img: string, idx: number) => (
                       <Reorder.Item key={img} value={img} className="preview-row" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={smoothTransition}>
                         <div className="preview-thumb"><img src={img} alt="" /></div>
                         <span style={{ fontWeight: 700 }}>TRANG {idx + 1}</span>
-                        <button className="remove-btn" onClick={(e) => { e.stopPropagation(); removeImage(idx); }}><X size={16} /></button>
+                        <button className="remove-btn" onClick={(e: React.MouseEvent) => { e.stopPropagation(); removeImage(idx); }}><X size={16} /></button>
                       </Reorder.Item>
                     ))}
                   </Reorder.Group>
